@@ -1,0 +1,5 @@
+============
+senaite.crms
+============
+
+User documentation
