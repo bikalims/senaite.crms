@@ -10,6 +10,7 @@
       directory="overrides"
       layer="senaite.crms.interfaces.ISenaiteCrmsLayer"
       />
+  <include package=".viewlets"/>
 
   <!-- Publish static files -->
   <plone:static

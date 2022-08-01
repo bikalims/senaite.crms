@@ -1,0 +1,27 @@
+<div tal:omit-tag=""
+     tal:condition="python:view.nr_expired > 0"
+     i18n:domain="senaite.crms">
+
+  <div class="visualClear"><!-- --></div>
+
+  <div id="portal-alert"
+       tal:define="items python:view.failed['expired'];"
+       tal:condition="python: len(items) > 0">
+    <div class="portlet-alert-item alert alert-warning alert-dismissible" tal:condition="python:len(items) > 0">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <p class="title" tal:condition="python:len(items) == 1">
+        <span tal:content="python:len(items)"/>
+        <span i18n:translate="">Reference Sample is about to expire</span>
+      </p>
+      <p class="title" tal:condition="python:len(items) > 1">
+        <span tal:content="python:len(items)"/>
+        <span i18n:translate="">Reference Samples are about to expire:</span>
+      </p>
+      <p tal:content="structure python:', '.join([i['link'] for i in items])"/>
+    </div>
+  </div>
+
+
+</div>
