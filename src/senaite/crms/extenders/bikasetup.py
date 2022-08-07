@@ -11,13 +11,13 @@ from bika.lims.interfaces import IBikaSetup
 from senaite.batch.invoices import _
 from senaite.crms.interfaces import ISenaiteCrmsLayer
 
-warning_period_field = ExtIntegerField(
-    "WarningPeriod",
+expiry_warning_field = ExtIntegerField(
+    "ExpiryWarning",
     mode="rw",
     schemata="Sampling",
     widget=IntegerWidget(
-        label=_(u"Warning Period"),
-        description=_(u"How long before Reference Samples expiry"),
+        label=_(u"Reference Sample Expiry Warning"),
+        description=_(u"Number of days before expiry an alert will be raised"),
         ))
 
 
@@ -27,7 +27,7 @@ class BikaSetupSchemaExtender(object):
     layer = ISenaiteCrmsLayer
 
     fields = [
-        warning_period_field,
+        expiry_warning_field,
     ]
 
     def __init__(self, context):

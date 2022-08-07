@@ -19,4 +19,13 @@
       directory="static"
       />
 
+  <!-- Emails Logs listing view -->
+  <browser:page
+      for="*"
+      name="emailslogs"
+      class=".emailslogs.EmailsLogsView"
+      permission="senaite.core.permissions.ManageAnalysisRequests"
+      layer="senaite.crms.interfaces.ISenaiteCrmsLayer"
+      />
+
 </configure>
