@@ -1,0 +1,13 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:zcml="http://namespaces.zope.org/zcml">
+
+  <!-- Emails Logs -->
+  <browser:page
+      for="senaite.crms.content.emailslogs.IEmailsLogs"
+      name="view"
+      class="senaite.crms.browser.emailslogs.EmailsLogsView"
+      permission="senaite.core.permissions.ManageBika"
+      layer="senaite.crms.interfaces.ISenaiteCrmsLayer"/>
+</configure>

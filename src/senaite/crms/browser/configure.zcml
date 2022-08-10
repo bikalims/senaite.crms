@@ -11,6 +11,7 @@
       layer="senaite.crms.interfaces.ISenaiteCrmsLayer"
       />
   <include package=".viewlets"/>
+  <include package=".controlpanel"/>
 
   <!-- Publish static files -->
   <plone:static
