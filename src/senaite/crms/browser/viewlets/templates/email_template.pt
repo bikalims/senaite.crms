@@ -2,7 +2,10 @@
   tal:define="laboratory python:context.bika_setup.laboratory"
   i18n:domain="senaite.crms">
 <tal:p i18n:translate="">
-Reference Sample(s)  will expire om yyyy-mm-dd, please re-order. A full report of reference samples expiring soon can be viewed at your-site.xyz/reports
+Reference Sample(s)  will expire on
+<tal:laboratory tal:replace="python:view.expiring_date"/> ,
+A full report of reference samples expiring soon can be viewed at
+<tal:laboratory tal:replace="python:laboratory.getLabURL()"/>/reports.
 </tal:p>
 
 <tal:p i18n:translate="">
