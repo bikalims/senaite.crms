@@ -12,4 +12,4 @@ class IEmailsLogs(model.Schema):
 
 @implementer(IEmailsLogs, IHideActionsMenu)
 class EmailsLogs(Container):
-    pass
+    _catalogs = ['portal_catalog']
