@@ -13,7 +13,7 @@ from senaite.samplepointlocations import _
 class EmailsLogsView(ListingView):
     def __init__(self, context, request):
         super(EmailsLogsView, self).__init__(context, request)
-        self.catalog = SETUP_CATALOG
+        self.catalog = 'portal_catalog'
         path = api.get_path(self.context)
         self.contentFilter = dict(
             portal_type="EmailsLog", sort_on="created"

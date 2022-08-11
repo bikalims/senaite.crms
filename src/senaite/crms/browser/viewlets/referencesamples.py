@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from string import Template
 from DateTime import DateTime
 from plone.app.layout.viewlets import ViewletBase
 from Products.CMFPlone.utils import safe_unicode
@@ -8,8 +9,9 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from bika.lims import api
 from bika.lims import logger
 from bika.lims import senaiteMessageFactory as _
+from bika.lims.api.security import get_user
+from bika.lims.api.security import get_user_id
 from bika.lims.api import mail as mailapi
-from string import Template
 
 
 class ReferenceSampleAlerts(ViewletBase):
@@ -26,6 +28,7 @@ class ReferenceSampleAlerts(ViewletBase):
             context, request, view, manager=manager)
         self.nr_expired = 0
         self.recipients = []
+        self.expiring_date = DateTime().Date()
         self.failed = {
             "expired": [],
         }
@@ -45,6 +48,17 @@ class ReferenceSampleAlerts(ViewletBase):
 
     # Email sending taken from
     # senaite.core/src/bika/lims/browser/publish/emailview.py
+
+    @property
+    def email_subject(self):
+        """Email subject line to be used in the template
+        """
+        # request parameter has precedence
+        subject = self.request.get("subject", None)
+        if subject is not None:
+            return subject
+        subject = self.context.translate(_("Reference Sample(s) will expire on {}"))
+        return subject.format(self.expiring_date)
 
     @property
     def email_recipients_and_responsibles(self):
@@ -109,19 +123,58 @@ class ReferenceSampleAlerts(ViewletBase):
         """
         # send email to the selected recipients and responsibles
         recipients = self.email_recipients_and_responsibles
-        subject = self.context.translate(_("Reference Sample(s) will expire om yyyy-mm-dd"))
+        if not recipients:
+            message = _("""
+            The manager does not have an email address set.
+            Therefore could not send email for expiring Reference Sample """)
+            self.add_status_message(message, "error")
+            return
+
+        subject = self.email_subject
         body = self.context.translate(_(self.email_template(self)))
         success = self.send_email(recipients, subject, body, [])
 
         if success:
             # write email sendlog log to keep track of the email submission
-            # emailslog = api.create(parent, portal_type="EmailsLog",**{"title":coa_num,"client": parent.getClient()})
+            self.write_sendlog()
             message = _(u"Message sent to {}".format(
                 ", ".join(self.email_recipients_and_responsibles)))
             self.add_status_message(message, "info")
         else:
             message = _("Failed to send Email(s)")
             self.add_status_message(message, "error")
+
+    def write_sendlog(self):
+        """Create emails log
+        """
+        timestamp = DateTime()
+        parent = api.get_setup().emails_logs
+        new_record = self.make_sendlog_record(email_send_date=timestamp)
+        api.create(parent, portal_type="EmailsLog", **new_record)
+
+    def make_sendlog_record(self, **kw):
+        """Create a new sendlog record
+        """
+        user = get_user()
+        actor = get_user_id()
+        userprops = api.get_user_properties(user)
+        actor_fullname = userprops.get("fullname", actor)
+        email_send_date = DateTime()
+        email_recipients = self.email_recipients_and_responsibles
+        email_subject = self.email_subject
+
+        record = {
+            "title": self.expiring_date,
+            "actor": actor,
+            "actor_fullname": actor_fullname,
+            "email_send_date": email_send_date,
+            "email_recipients": email_recipients,
+            "email_subject": email_subject,
+
+        }
+        # keywords take precedence
+        record.update(kw)
+        return record
 
     def add_status_message(self, message, level="info"):
         """Set a portal status message
@@ -180,12 +233,13 @@ class ReferenceSampleAlerts(ViewletBase):
         Return a dictionary with all info about expired reference sample
         """
         setup = api.get_setup()
-        expiring_warning = setup.ExpiryWarning
+        expiring_warning = setup.Schema().getField('ExpiryWarning').get(setup)
         if not expiring_warning:
             return
         bsc = api.get_tool("senaite_catalog")
         date_from = DateTime()
         date_to = date_from + expiring_warning
+        self.expiring_date = date_to.Date()
         query = {"portal_type": "ReferenceSample", "is_active": True}
         query['getExpiryDate'] = {'query': (date_from, date_to),
                                   'range': 'min:max'}
@@ -199,6 +253,13 @@ class ReferenceSampleAlerts(ViewletBase):
             )
             self.failed['expired'].append(ref_sample)
 
+    def emailslogs(self):
+        # has email been sent today
+        query = {"portal_type": "EmailsLog"}
+        query["created"] = {"query": DateTime(), "range": "max"}
+        bsc = api.get_tool("portal_catalog")
+        return bsc(query)
+
     def available(self):
         return True
 
@@ -210,12 +271,9 @@ class ReferenceSampleAlerts(ViewletBase):
 
         self.get_expired_reference_samples()
 
-        # has email been sent today
-        bsc = api.get_tool("senaite_catalog")
-        query = {"portal_type": "EmailsLog", "getEmailSendDate": DateTime()}
-        emailslogs = bsc(query)
         if self.nr_expired:
-            if not emailslogs:
+            self.email_action_send()
+            if not self.emailslogs():
                 self.email_action_send()
             return self.index()
         else:
