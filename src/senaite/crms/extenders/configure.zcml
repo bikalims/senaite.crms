@@ -8,4 +8,8 @@
              provides="archetypes.schemaextender.interfaces.ISchemaExtender"
              factory=".bikasetup.BikaSetupSchemaExtender"/>
 
+    <adapter name='senaite.crms.alerts'
+             provides="archetypes.schemaextender.interfaces.ISchemaExtender"
+             factory=".referencesample.ReferenceSampleSchemaExtender"/>
+
 </configure>
