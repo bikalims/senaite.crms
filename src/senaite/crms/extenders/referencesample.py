@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from DateTime import DateTime
+from Products.Archetypes import atapi
 from archetypes.schemaextender.interfaces import IBrowserLayerAwareExtender
 from archetypes.schemaextender.interfaces import ISchemaExtender
 from zope.component import adapts
@@ -12,15 +14,19 @@ from senaite.crms import _
 from senaite.crms.interfaces import ISenaiteCrmsLayer
 from senaite.core.browser.widgets import DateTimeWidget
 
-# setup = api.get_setup()
-# expiring_warning = setup.Schema().getField('ExpiryWarning').get(setup)
-# default_alert_date = DateTime + expiring_warning
+
+class AlertDateField(ExtDateTimeField, atapi.IntegerField):
+
+    def getDefault(self, instance):
+        setup = api.get_setup()
+        expiring_warning = setup.Schema().getField('ExpiryWarning').get(setup)
+        default_alert_date = DateTime() + expiring_warning
+        return default_alert_date
 
 
-alert_date_field = ExtDateTimeField(
+alert_date_field = AlertDateField(
     "AlertDate",
     mode="rw",
-    # default=default_alert_date,
     widget=DateTimeWidget(
         label=_(u"Alert Date"),
         description=_(u"Alert Date"),))
