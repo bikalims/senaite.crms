@@ -1,0 +1,34 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+       xmlns:zcml="http://namespaces.zope.org/browser"
+       xmlns:fss="http://namespaces.zope.org/browser"
+       xmlns:browser="http://namespaces.zope.org/browser"
+       xmlns:five="http://namespaces.zope.org/five"
+       i18n_domain="senaite.crms">
+
+    <!-- Main reference samples view -->
+    <browser:page
+      for="bika.lims.interfaces.IReferenceSamplesFolder"
+      name="folder_view"
+      class="senaite.crms.browser.overrides.referencesamples.ReferenceSamplesView"
+      permission="senaite.core.permissions.ManageReference"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <!-- Single Reference Sample View -->
+    <browser:page
+      for="bika.lims.interfaces.IReferenceSample"
+      name="base_view"
+      class="senaite.crms.browser.overrides.referencesamples.ViewView"
+      permission="senaite.core.permissions.ManageReference"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <!-- Single Reference Sample View -->
+    <browser:page
+      for="bika.lims.interfaces.ISupplier"
+      name="reference_samples"
+      class="senaite.crms.browser.overrides.referencesamples.SupplierReferenceSamplesView"
+      permission="zope2.View"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+</configure>

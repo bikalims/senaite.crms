@@ -5,5 +5,5 @@
        xmlns:five="http://namespaces.zope.org/five"
        i18n_domain="senaite.crms">
 
-     <include package=".browser" file="overrides.zcml" />
+     <include package=".overrides" file="overrides.zcml" />
 </configure>

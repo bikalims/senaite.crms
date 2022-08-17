@@ -5,5 +5,12 @@
        xmlns:five="http://namespaces.zope.org/five"
        i18n_domain="senaite.crms">
 
-     <include package=".browser" file="overrides.zcml" />
+    <browser:page
+      for="bika.lims.interfaces.IReportFolder"
+      name="administration"
+      class="senaite.crms.browser.overrides.reports.AdministrationView"
+      permission="zope2.View"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
 </configure>
