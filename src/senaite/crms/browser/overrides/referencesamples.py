@@ -2,7 +2,6 @@
 
 import collections
 from datetime import datetime
-from DateTime import DateTime
 from Products.ATContentTypes.utils import DT2dt
 
 from bika.lims import api
@@ -71,8 +70,8 @@ class ReferenceSamplesView(RSV):
                 "title": _("Expiry Date"),
                 "index": "getExpiryDate",
                 "toggle": True}),
-            ("ExpiresIn", {
-                "title": _("Expires In"),
+            ("AlertDate", {
+                "title": _("Alert Date"),
                 "toggle": True}),
             ("state_title", {
                 "title": _("State"),
@@ -118,7 +117,6 @@ class ReferenceSamplesView(RSV):
         """
 
         obj = api.get_object(obj)
-        today = DateTime() +7
 
         # XXX Refactor expiration to a proper place
         # ---------------------------- 8< -------------------------------------
@@ -149,7 +147,7 @@ class ReferenceSamplesView(RSV):
         item["DateReceived"] = self.ulocalized_time(obj.getDateReceived())
         item["DateOpened"] = self.ulocalized_time(obj.getDateOpened())
         item["ExpiryDate"] = self.ulocalized_time(obj.getExpiryDate())
-        item["ExpiresIn"] = obj.getExpiryDate() - today
+        item["AlertDate"] = self.ulocalized_time(obj.getExpiryDate() - self.getExpiryWarning())
 
         manufacturer = obj.getManufacturer()
         item["replace"]["Manufacturer"] = get_link_for(manufacturer)
@@ -172,3 +170,10 @@ class ReferenceSamplesView(RSV):
             item["after"]["ID"] = after_icons
 
         return item
+
+    def getExpiryWarning(self):
+        setup = api.get_setup()
+        expiring_warning = setup.Schema().getField('ExpiryWarning').get(setup)
+        if not expiring_warning:
+            return 0
+        return expiring_warning
