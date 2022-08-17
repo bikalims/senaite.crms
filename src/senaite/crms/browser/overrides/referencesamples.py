@@ -13,6 +13,7 @@ from bika.lims.utils import get_link_for
 from bika.lims.browser.referencesample import ReferenceSamplesView as RSV
 from bika.lims.browser.referencesample import ViewView as VV
 from senaite.crms import _
+from senaite.crms.utils import get_local_image
 
 
 class ViewView(VV):
@@ -162,8 +163,8 @@ class ReferenceSamplesView(RSV):
         after_icons = ''
         alertdate = DT2dt(alertdate).replace(tzinfo=None)
         if (datetime.today() > alertdate):
-            after_icons += get_image(
-                "hazardous.png", title=t(_("Hazardous")))
+            after_icons += get_local_image(
+                "red alert icon 16x16.png", title=t(_("Alert Date")))
         if after_icons:
             item["after"]["AlertDate"] = after_icons
 

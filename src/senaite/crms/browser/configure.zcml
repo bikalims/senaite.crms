@@ -19,6 +19,11 @@
       type="plone"
       directory="static"
       />
+  <browser:resourceDirectory
+      name="senaite.crms.images"
+      directory="static/images"
+      layer="senaite.crms.interfaces.ISenaiteCrmsLayer"
+      />
 
   <!-- Emails Logs listing view -->
   <browser:page
