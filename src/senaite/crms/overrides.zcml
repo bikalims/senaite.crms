@@ -22,4 +22,13 @@
       permission="senaite.core.permissions.ManageReference"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
+
+    <!-- Single Reference Sample View -->
+    <browser:page
+      for="bika.lims.interfaces.ISupplier"
+      name="reference_samples"
+      class="senaite.crms.browser.overrides.referencesamples.SupplierReferenceSamplesView"
+      permission="zope2.View"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
 </configure>

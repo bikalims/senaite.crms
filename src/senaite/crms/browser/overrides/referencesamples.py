@@ -196,3 +196,25 @@ class ReferenceSamplesView(RSV):
         if not expiring_warning:
             return 0
         return expiring_warning
+
+
+class SupplierReferenceSamplesView(ReferenceSamplesView):
+    """Supplier Reference Samples
+    """
+
+    def __init__(self, context, request):
+        super(SupplierReferenceSamplesView, self).__init__(context, request)
+
+        self.contentFilter["path"]["query"] = api.get_path(context)
+
+        self.context_actions = {
+            _("Add"): {
+                "url": "createObject?type_name=ReferenceSample",
+                "permission": "Add portal content",
+                "icon": "++resource++bika.lims.images/add.png"}
+        }
+
+        # Remove the Supplier column from the list
+        del self.columns["Supplier"]
+        for rs in self.review_states:
+            rs["columns"] = [col for col in rs["columns"] if col != "Supplier"]
