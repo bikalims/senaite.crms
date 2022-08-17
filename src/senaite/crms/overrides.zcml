@@ -13,4 +13,13 @@
       permission="senaite.core.permissions.ManageReference"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
+
+    <!-- Single Reference Sample View -->
+    <browser:page
+      for="bika.lims.interfaces.IReferenceSample"
+      name="base_view"
+      class="senaite.crms.browser.overrides.referencesamples.ViewView"
+      permission="senaite.core.permissions.ManageReference"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
 </configure>

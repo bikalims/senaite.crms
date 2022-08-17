@@ -3,6 +3,7 @@
 import collections
 from datetime import datetime
 from Products.ATContentTypes.utils import DT2dt
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from bika.lims import api
 from bika.lims.utils import get_image
@@ -10,7 +11,14 @@ from bika.lims.utils import get_link
 from bika.lims.utils import t
 from bika.lims.utils import get_link_for
 from bika.lims.browser.referencesample import ReferenceSamplesView as RSV
+from bika.lims.browser.referencesample import ViewView as VV
 from senaite.crms import _
+
+
+class ViewView(VV):
+    """Reference Sample View
+    """
+    template = ViewPageTemplateFile("templates/referencesample_view.pt")
 
 
 class ReferenceSamplesView(RSV):
@@ -139,6 +147,7 @@ class ReferenceSamplesView(RSV):
 
         url = api.get_url(obj)
         id = api.get_id(obj)
+        alertdate = obj.getExpiryDate() - self.getExpiryWarning()
 
         item["ID"] = id
         item["replace"]["ID"] = get_link(url, value=id)
@@ -147,7 +156,16 @@ class ReferenceSamplesView(RSV):
         item["DateReceived"] = self.ulocalized_time(obj.getDateReceived())
         item["DateOpened"] = self.ulocalized_time(obj.getDateOpened())
         item["ExpiryDate"] = self.ulocalized_time(obj.getExpiryDate())
-        item["AlertDate"] = self.ulocalized_time(obj.getExpiryDate() - self.getExpiryWarning())
+        item["AlertDate"] = self.ulocalized_time(alertdate)
+
+        # Icons
+        after_icons = ''
+        alertdate = DT2dt(alertdate).replace(tzinfo=None)
+        if (datetime.today() > alertdate):
+            after_icons += get_image(
+                "hazardous.png", title=t(_("Hazardous")))
+        if after_icons:
+            item["after"]["AlertDate"] = after_icons
 
         manufacturer = obj.getManufacturer()
         item["replace"]["Manufacturer"] = get_link_for(manufacturer)

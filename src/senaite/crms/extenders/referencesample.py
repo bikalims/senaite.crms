@@ -27,6 +27,7 @@ class AlertDateField(ExtDateTimeField, atapi.IntegerField):
 alert_date_field = AlertDateField(
     "AlertDate",
     mode="rw",
+    schemata="Dates",
     widget=DateTimeWidget(
         label=_(u"Alert Date"),
         description=_(u"Alert Date"),))
