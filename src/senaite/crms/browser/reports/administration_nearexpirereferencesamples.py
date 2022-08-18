@@ -16,7 +16,7 @@ class Report(RA):
         headings = {}
         headings['header'] = _("Expiring Reference Samples")
         headings['subheader'] = _(
-            "Published Samples which have not been invoiced")
+            "Expiring Reference Samples")
 
         count_all = 0
 
@@ -71,7 +71,7 @@ class Report(RA):
         # table footer data
         footlines = []
         footline = []
-        footitem = {'value': _('Number of analyses retested for period'),
+        footitem = {'value': _('Number of Reference Samples expiring in this period'),
                     'colspan': 3,
                     'class': 'total_label'}
         footline.append(footitem)

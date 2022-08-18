@@ -126,11 +126,11 @@
             </li>
           </ul>
 
-          <h2 i18n:translate="">Near-expiry Reference Sample report</h2>
+          <h2 i18n:translate="">Inventory Reports</h2>
           <ul id="toc-reports">
             <li>
               <a href="#" id="nearexpirereferencesamples_selector"
-                 i18n:translate="">QC Reports</a><br/>
+                 i18n:translate="">Near-expiry Reference Samples</a><br/>
               <span i18n:translate="">
                 Reference Samples about to Expire<br/>
                 Reference Samples expiring in a date range
