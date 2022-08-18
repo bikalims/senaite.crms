@@ -126,6 +126,40 @@
             </li>
           </ul>
 
+          <h2 i18n:translate="">Near-expiry Reference Sample report</h2>
+          <ul id="toc-reports">
+            <li>
+              <a href="#" id="nearexpirereferencesamples_selector"
+                 i18n:translate="">QC Reports</a><br/>
+              <span i18n:translate="">
+                Reference Samples about to Expire<br/>
+                Reference Samples expiring in a date range
+              </span>
+
+              <div id="nearexpirereferencesamples" style="display:none"
+                   class="criteria">
+                <form action="createreport" method="post"
+                      tal:attributes="action string:${here/absolute_url}/createreport"
+                      name="administration_near_expire_referencesamples">
+                  <input type="hidden" name="report_id"
+                         value="administration_nearexpirereferencesamples"/>
+                  <fieldset>
+                    <tal:x content="structure python:view.selection_macros.select_daterange(
+                                    field_id='ExpiryDate',
+                                    field_title='Expiry Date')"/>
+                    <tal:x content="structure context/@@selection_macros/select_output_format"/>
+                  </fieldset>
+                  <input tabindex=""
+                         class="searchButton allowMultiSubmit"
+                         type="submit"
+                         name="submit"
+                         value="Generate report"
+                         i18n:attributes="value"/>
+                </form>
+              </div>
+            </li>
+          </ul>
+
           <h2 i18n:translate="">Traceability</h2>
           <ul id="toc-reports">
             <li>
