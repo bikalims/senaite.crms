@@ -8,7 +8,7 @@ from zope.interface import implementer
 
 from .fields import ExtIntegerField
 from bika.lims.interfaces import IBikaSetup
-from senaite.batch.invoices import _
+from senaite.crms import _
 from senaite.crms.interfaces import ISenaiteCrmsLayer
 
 expiry_warning_field = ExtIntegerField(
