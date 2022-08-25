@@ -14,6 +14,7 @@ from senaite.crms.interfaces import ISenaiteCrmsLayer
 expiry_warning_field = ExtIntegerField(
     "ExpiryWarning",
     mode="rw",
+    default=0,
     schemata="Sampling",
     widget=IntegerWidget(
         label=_(u"Reference Sample Expiry Warning"),

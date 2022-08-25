@@ -5,16 +5,13 @@ import collections
 from bika.lims import api
 from bika.lims.utils import get_link
 from senaite.app.listing import ListingView
-from senaite.core.catalog import SETUP_CATALOG
-from senaite.samplepointlocations.permissions import AddSamplePointLocation
-from senaite.samplepointlocations import _
+from senaite.crms import _
 
 
 class EmailsLogsView(ListingView):
     def __init__(self, context, request):
         super(EmailsLogsView, self).__init__(context, request)
         self.catalog = 'portal_catalog'
-        path = api.get_path(self.context)
         self.contentFilter = dict(
             portal_type="EmailsLog", sort_on="created"
         )
