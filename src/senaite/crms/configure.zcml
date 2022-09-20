@@ -21,7 +21,7 @@
 
   <genericsetup:registerProfile
       name="default"
-      title="senaite.crms"
+      title="SENAITE CRMS"
       directory="profiles/default"
       description="Installs the senaite.crms add-on."
       provides="Products.GenericSetup.interfaces.EXTENSION"
