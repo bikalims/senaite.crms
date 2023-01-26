@@ -272,7 +272,6 @@ class ReferenceSampleAlerts(ViewletBase):
         self.get_expired_reference_samples()
 
         if self.nr_expired:
-            self.email_action_send()
             if not self.emailslogs():
                 self.email_action_send()
             return self.index()
