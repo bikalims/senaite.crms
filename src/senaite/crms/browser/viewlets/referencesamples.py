@@ -7,11 +7,12 @@ from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from bika.lims import api
-from bika.lims import logger
-from bika.lims import senaiteMessageFactory as _
 from bika.lims.api.security import get_user
 from bika.lims.api.security import get_user_id
 from bika.lims.api import mail as mailapi
+
+from senaite.crms import _
+from senaite.crms import logger
 
 
 class ReferenceSampleAlerts(ViewletBase):
@@ -127,6 +128,7 @@ class ReferenceSampleAlerts(ViewletBase):
             message = _("""
             The manager does not have an email address set.
             Therefore could not send email for expiring Reference Sample """)
+            logger.info(message)
             self.add_status_message(message, "error")
             return
 
@@ -139,9 +141,11 @@ class ReferenceSampleAlerts(ViewletBase):
             self.write_sendlog()
             message = _(u"Message sent to {}".format(
                 ", ".join(self.email_recipients_and_responsibles)))
+            logger.info(message)
             self.add_status_message(message, "info")
         else:
             message = _("Failed to send Email(s)")
+            logger.info(message)
             self.add_status_message(message, "error")
 
     def write_sendlog(self):
@@ -272,8 +276,14 @@ class ReferenceSampleAlerts(ViewletBase):
         self.get_expired_reference_samples()
 
         if self.nr_expired:
+            msg = "Found {} expired Reference Sample".format(self.nr_expired)
+            logger.info(msg)
             if not self.emailslogs():
+                msg = "No emails sent to, preparing to send an email"
+                logger.info(msg)
                 self.email_action_send()
             return self.index()
         else:
+            msg = "No expired Reference Sample"
+            logger.info(msg)
             return ""
