@@ -12,7 +12,6 @@ from bika.lims.api.security import get_user_id
 from bika.lims.api import mail as mailapi
 
 from senaite.crms import _
-from senaite.crms import logger
 
 
 class ReferenceSampleAlerts(ViewletBase):
@@ -128,7 +127,6 @@ class ReferenceSampleAlerts(ViewletBase):
             message = _("""
             The manager does not have an email address set.
             Therefore could not send email for expiring Reference Sample """)
-            logger.info(message)
             self.add_status_message(message, "error")
             return
 
@@ -141,11 +139,9 @@ class ReferenceSampleAlerts(ViewletBase):
             self.write_sendlog()
             message = _(u"Message sent to {}".format(
                 ", ".join(self.email_recipients_and_responsibles)))
-            logger.info(message)
             self.add_status_message(message, "info")
         else:
             message = _("Failed to send Email(s)")
-            logger.info(message)
             self.add_status_message(message, "error")
 
     def write_sendlog(self):
@@ -213,7 +209,6 @@ class ReferenceSampleAlerts(ViewletBase):
                 msg = _("Could not send email to {0} ({1})").format(pair[0],
                                                                     pair[1])
                 self.add_status_message(msg, "warning")
-                logger.error(msg)
             success.append(sent)
 
         if not all(success):
@@ -260,11 +255,13 @@ class ReferenceSampleAlerts(ViewletBase):
     def emailslogs(self):
         # has email been sent today
         query = {"portal_type": "EmailsLog"}
-        query["created"] = {"query": DateTime(), "range": "max"}
+        query["created"] = {"query": DateTime().Date(), "range": "min"}
         bsc = api.get_tool("portal_catalog")
         return bsc(query)
 
     def available(self):
+        if self.emailslogs():
+            return False
         return True
 
     def render(self):
@@ -276,14 +273,8 @@ class ReferenceSampleAlerts(ViewletBase):
         self.get_expired_reference_samples()
 
         if self.nr_expired:
-            msg = "Found {} expired Reference Sample".format(self.nr_expired)
-            logger.info(msg)
             if not self.emailslogs():
-                msg = "No emails sent to, preparing to send an email"
-                logger.info(msg)
                 self.email_action_send()
             return self.index()
         else:
-            msg = "No expired Reference Sample"
-            logger.info(msg)
             return ""

@@ -5,15 +5,7 @@
 
   <!-- Reference Samples Alerts viewlet -->
   <browser:viewlet
-      for="bika.lims.interfaces.IReferenceSamplesFolder"
-      name="senaite.core.abovesamplesection.expire"
-      manager="plone.app.layout.viewlets.interfaces.IAboveContent"
-      class=".referencesamples.ReferenceSampleAlerts"
-      layer="senaite.crms.interfaces.ISenaiteCrmsLayer"
-      permission="zope2.View" />
-
-  <browser:viewlet
-      for="bika.lims.interfaces.IReferenceSample"
+      for="*"
       name="senaite.core.abovesamplesection.expire"
       manager="plone.app.layout.viewlets.interfaces.IAboveContent"
       class=".referencesamples.ReferenceSampleAlerts"
