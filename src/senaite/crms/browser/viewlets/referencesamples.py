@@ -7,9 +7,11 @@ from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from bika.lims import api
+from bika.lims.api import mail as mailapi
 from bika.lims.api.security import get_user
 from bika.lims.api.security import get_user_id
-from bika.lims.api import mail as mailapi
+from bika.lims.interfaces import IReferenceSample
+from bika.lims.interfaces import IReferenceSamplesFolder
 
 from senaite.crms import _
 
@@ -57,8 +59,8 @@ class ReferenceSampleAlerts(ViewletBase):
         subject = self.request.get("subject", None)
         if subject is not None:
             return subject
-        subject = self.context.translate(_("Reference Sample(s) will expire on {}"))
-        return subject.format(self.expiring_date)
+        subject = self.context.translate(_("{} Reference Sample(s) will expire on {}"))
+        return subject.format(self.nr_expired, self.expiring_date)
 
     @property
     def email_recipients_and_responsibles(self):
@@ -260,21 +262,22 @@ class ReferenceSampleAlerts(ViewletBase):
         return bsc(query)
 
     def available(self):
-        if self.emailslogs():
-            return False
-        return True
+        if self.nr_expired:
+            return True
+        return False
 
     def render(self):
         """Render the viewlet
         """
+        self.get_expired_reference_samples()
+
         if not self.available():
             return ""
 
-        self.get_expired_reference_samples()
-
-        if self.nr_expired:
-            if not self.emailslogs():
-                self.email_action_send()
+        if not self.emailslogs():
+            self.email_action_send()
+        is_reference_sample = IReferenceSample.providedBy(self.context)
+        is_reference_sample_folder = IReferenceSamplesFolder.providedBy(self.context)
+        if is_reference_sample or is_reference_sample_folder:
             return self.index()
-        else:
-            return ""
+        return ""
