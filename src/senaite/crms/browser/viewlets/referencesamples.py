@@ -120,7 +120,7 @@ class ReferenceSampleAlerts(ViewletBase):
 
         return email_template
 
-    def email_action_send(self):
+    def email_action_send(self, **kw):
         """Send form handler
         """
         # send email to the selected recipients and responsibles
@@ -134,7 +134,7 @@ class ReferenceSampleAlerts(ViewletBase):
 
         subject = self.email_subject
         body = self.context.translate(_(self.email_template(self)))
-        success = self.send_email(recipients, subject, body, [])
+        success = self.send_email(recipients, subject, body, [], **kw)
 
         if success:
             # write email sendlog log to keep track of the email submission
@@ -183,7 +183,7 @@ class ReferenceSampleAlerts(ViewletBase):
         """
         return self.context.plone_utils.addPortalMessage(message, level)
 
-    def send_email(self, recipients, subject, body, attachments=None):
+    def send_email(self, recipients, subject, body, attachments=None, **kw):
         """Prepare and send email to the recipients
 
         :param recipients: a list of email or name,email strings
@@ -205,7 +205,8 @@ class ReferenceSampleAlerts(ViewletBase):
                                              to_address,
                                              subject,
                                              email_body,
-                                             attachments=attachments)
+                                             attachments=attachments,
+                                             **kw)
             sent = mailapi.send_email(mime_msg)
             if not sent:
                 msg = _("Could not send email to {0} ({1})").format(pair[0],
@@ -262,6 +263,8 @@ class ReferenceSampleAlerts(ViewletBase):
         return bsc(query)
 
     def available(self):
+        kw = {"html": True}
+        self.email_action_send(**kw)
         if self.nr_expired:
             return True
         return False
@@ -275,7 +278,8 @@ class ReferenceSampleAlerts(ViewletBase):
             return ""
 
         if not self.emailslogs():
-            self.email_action_send()
+            kw = {"html": True}
+            self.email_action_send(**kw)
         is_reference_sample = IReferenceSample.providedBy(self.context)
         is_reference_sample_folder = IReferenceSamplesFolder.providedBy(self.context)
         if is_reference_sample or is_reference_sample_folder:

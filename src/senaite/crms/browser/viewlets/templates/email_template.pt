@@ -1,11 +1,15 @@
 <tal:email_template
-  tal:define="laboratory python:context.bika_setup.laboratory"
+  tal:define="laboratory python:context.bika_setup.laboratory;
+              referencesamples python:context.bika_setup.referencesamples.absolute_url()"
   i18n:domain="senaite.crms">
 <tal:p i18n:translate="">
 Reference Sample(s)  will expire on
-<tal:laboratory tal:replace="python:view.expiring_date"/> ,
+<tal:laboratory tal:replace="python:view.expiring_date"/>,
 A full report of reference samples expiring soon can be viewed at
-<tal:laboratory tal:replace="python:laboratory.getLabURL()"/>/reports.
+<a href=""
+   tal:attributes="href string:${referencesamples}/reports">
+    Reference Sample Expiry Reports
+</a> and <a href="" tal:attributes="href string:${referencesamples}">Reference Samples</a>.
 </tal:p>
 
 <tal:p i18n:translate="">
