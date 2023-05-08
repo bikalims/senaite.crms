@@ -263,8 +263,6 @@ class ReferenceSampleAlerts(ViewletBase):
         return bsc(query)
 
     def available(self):
-        kw = {"html": True}
-        self.email_action_send(**kw)
         if self.nr_expired:
             return True
         return False
