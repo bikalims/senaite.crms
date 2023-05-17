@@ -9,7 +9,7 @@ A full report of reference samples expiring soon can be viewed at
 <a href=""
    tal:attributes="href string:${referencesamples}/reports">
     Reference Sample Expiry Reports
-</a> and <a href="" tal:attributes="href string:${referencesamples}">Reference Samples</a>.
+</a>.
 </tal:p>
 
 <tal:p i18n:translate="">
