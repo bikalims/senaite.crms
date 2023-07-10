@@ -11,6 +11,7 @@ from bika.lims.utils import to_unicode as _u
 from bika.lims.utils import to_utf8 as _c
 from DateTime import DateTime
 from Products.CMFPlone.utils import _createObjectByType
+from Products.CMFPlone.utils import get_installer
 from zope.component import getAdapters
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -22,6 +23,10 @@ class AdministrationView(AV):
     """ Administration View form
     """
     template = ViewPageTemplateFile("templates/administration.pt")
+
+    def is_senaite_crms_installed(self):
+        qi = get_installer(self.portal)
+        return qi.is_product_installed("senaite.crms")
 
 
 class SubmitForm(SF):

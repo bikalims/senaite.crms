@@ -126,6 +126,7 @@
             </li>
           </ul>
 
+          <tal:scrms tal:condition="python:view.is_senaite_crms_installed()">
           <h2 i18n:translate="">Inventory Reports</h2>
           <ul id="toc-reports">
             <li>
@@ -159,6 +160,7 @@
               </div>
             </li>
           </ul>
+          </tal:scrms>
 
           <h2 i18n:translate="">Traceability</h2>
           <ul id="toc-reports">
