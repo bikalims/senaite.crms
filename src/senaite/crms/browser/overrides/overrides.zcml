@@ -6,5 +6,7 @@
        i18n_domain="senaite.crms">
 
      <include file="referencesamples.zcml"/>
+     <!--
      <include file="reports.zcml"/>
+     -->
 </configure>
