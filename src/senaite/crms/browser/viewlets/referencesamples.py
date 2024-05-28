@@ -41,7 +41,7 @@ class ReferenceSampleAlerts(ViewletBase):
         departments = setup.departments
         out = []
         for i, dept in enumerate(departments):
-            manager = dept.getManager()
+            manager = dept.manager
             if not manager:
                 continue
             if manager in out:
