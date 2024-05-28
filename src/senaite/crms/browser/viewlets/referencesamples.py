@@ -37,7 +37,8 @@ class ReferenceSampleAlerts(ViewletBase):
 
     @property
     def managers(self):
-        departments = api.get_setup().bika_departments.values()
+        setup = api.get_senaite_setup()
+        departments = setup.departments
         out = []
         for i, dept in enumerate(departments):
             manager = dept.getManager()
