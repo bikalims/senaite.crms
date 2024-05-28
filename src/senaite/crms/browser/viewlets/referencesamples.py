@@ -38,12 +38,13 @@ class ReferenceSampleAlerts(ViewletBase):
     @property
     def managers(self):
         setup = api.get_senaite_setup()
-        departments = setup.departments
+        departments = setup.departments.values()
         out = []
         for i, dept in enumerate(departments):
             manager = dept.manager
             if not manager:
                 continue
+            manager = api.get_object_by_uid(manager[0])
             if manager in out:
                 continue
             out.append(manager)
