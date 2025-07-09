@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from Products.CMFCore.utils import getToolByName
-from bika.lims.browser.reports.administration_arsnotinvoiced import Report as RA
+from bika.reports.browser.reports.administration_arsnotinvoiced import Report as RA
 from bika.lims.utils import t
 from bika.lims.utils import formatDateQuery, formatDateParms
 from senaite.crms import _
