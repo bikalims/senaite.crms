@@ -3,8 +3,8 @@
 import os
 
 from senaite.crms import _
-from bika.lims.browser.reports.selection_macros import SelectionMacrosView
-from bika.lims.interfaces import IProductivityReport
+from bika.reports.browser.reports.selection_macros import SelectionMacrosView
+from bika.reports.interfaces import IProductivityReport
 from bika.lims.utils import createPdf
 from bika.lims.utils import logged_in_client
 from bika.lims.utils import to_unicode as _u
@@ -15,8 +15,8 @@ from Products.CMFPlone.utils import get_installer
 from zope.component import getAdapters
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from bika.lims.browser.reports import AdministrationView as AV
-from bika.lims.browser.reports import SubmitForm as SF
+from bika.reports.browser.reports import AdministrationView as AV
+from bika.reports.browser.reports import SubmitForm as SF
 
 
 class AdministrationView(AV):

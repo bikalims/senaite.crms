@@ -6,7 +6,7 @@
        i18n_domain="senaite.crms">
 
     <browser:page
-      for="bika.lims.interfaces.IReportFolder"
+      for="bika.reports.interfaces.IReportFolder"
       name="administration"
       class="senaite.crms.browser.overrides.reports.AdministrationView"
       permission="zope2.View"
@@ -14,7 +14,7 @@
     />
 
     <browser:page
-      for="bika.lims.interfaces.IReportFolder"
+      for="bika.reports.interfaces.IReportFolder"
       name="createreport"
       class="senaite.crms.browser.overrides.reports.SubmitForm"
       permission="zope2.View"
