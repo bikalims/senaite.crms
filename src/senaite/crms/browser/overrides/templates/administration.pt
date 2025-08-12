@@ -2,7 +2,7 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="senaite.core">
+      i18n:domain="senaite.crms">
 
   <head>
     <metal:block fill-slot="head_slot">
@@ -72,6 +72,15 @@
        }
       </style>
     </metal:block>
+    <metal:block fill-slot="senaite_legacy_resources"
+                 tal:define="portal context/@@plone_portal_state/portal;">
+      <script type="text/javascript"
+              tal:attributes="src python:portal.absolute_url() + '/senaite_widgets/datetimewidget.js'"></script>
+      <script type="text/javascript"
+              src="bika.lims.reports.js"
+              tal:attributes="src string:${portal/absolute_url}/++plone++bika.reports/js/bika.lims.reports.js"></script>
+
+    </metal:block>
   </head>
 
   <body>
@@ -88,6 +97,7 @@
 
       <div>
         <fieldset>
+          <!--
           <h2 i18n:translate="">Analyses related reports</h2>
           <ul id="toc-reports">
             <li>
@@ -125,6 +135,7 @@
               </div>
             </li>
           </ul>
+          -->
 
           <tal:scrms tal:condition="python:view.is_senaite_crms_installed()">
           <h2 i18n:translate="">Inventory Reports</h2>
@@ -144,6 +155,9 @@
                       name="administration_near_expire_referencesamples">
                   <input type="hidden" name="report_id"
                          value="administration_nearexpirereferencesamples"/>
+                  <input type="hidden"
+                         name="report_module"
+                         tal:attributes="value string:senaite.crms.browser.reports.administration_nearexpirereferencesamples" />
                   <fieldset>
                     <tal:x content="structure python:view.selection_macros.select_daterange(
                                     field_id='ExpiryDate',
@@ -161,6 +175,99 @@
             </li>
           </ul>
           </tal:scrms>
+
+          <h2 i18n:translate="">Clients</h2>
+          <ul id="toc-reports">
+            <li>
+              <a href="#" id="allclients_selector"
+                 i18n:translate="">All Clients</a><br/>
+              <span i18n:translate="">
+                All Clients
+              </span>
+
+              <div id="allclients" style="display:none"
+                   class="criteria">
+                <form action="createreport" method="post"
+                      tal:attributes="action string:${here/absolute_url}/createreport"
+                      name="administration_all_clients">
+                  <input type="hidden" name="report_id"
+                         value="administration_allclients"/>
+                  <input type="hidden"
+                         name="report_module"
+                         tal:attributes="value string:bika.extras.browser.reports.administration_allclients" />
+                  <fieldset>
+                    <tal:x content="structure context/@@selection_macros/select_output_format"/>
+                  </fieldset>
+                  <input tabindex=""
+                         class="searchButton allowMultiSubmit"
+                         type="submit"
+                         name="submit"
+                         value="Generate report"
+                         i18n:attributes="value"/>
+                </form>
+              </div>
+            </li>
+            <li>
+              <a href="#" id="clientcontacts_selector"
+                 i18n:translate="">Client Contacts</a><br/>
+              <span i18n:translate="">
+                Client contacts
+              </span>
+
+              <div id="clientcontacts" style="display:none"
+                   class="criteria">
+                <form action="createreport" method="post"
+                      tal:attributes="action string:${here/absolute_url}/createreport"
+                      name="administration_client_contacts">
+                  <input type="hidden" name="report_id"
+                         value="administration_clientcontacts"/>
+                  <input type="hidden"
+                         name="report_module"
+                         tal:attributes="value string:bika.extras.browser.reports.administration_clientcontacts" />
+                  <fieldset>
+                    <tal:x content="structure context/@@selection_macros/select_client"/>
+                    <tal:x content="structure context/@@selection_macros/select_output_format"/>
+                  </fieldset>
+                  <input tabindex=""
+                         class="searchButton allowMultiSubmit"
+                         type="submit"
+                         name="submit"
+                         value="Generate report"
+                         i18n:attributes="value"/>
+                </form>
+              </div>
+            </li>
+            <li>
+              <a href="#" id="clientsamplepoints_selector"
+                 i18n:translate="">Client Sample Points</a><br/>
+              <span i18n:translate="">
+                Client Sample Points
+              </span>
+
+              <div id="clientsamplepoints" style="display:none"
+                   class="criteria">
+                <form action="createreport" method="post"
+                      tal:attributes="action string:${here/absolute_url}/createreport"
+                      name="administration_client_sample_points">
+                  <input type="hidden" name="report_id"
+                         value="administration_clientsamplepoints"/>
+                  <input type="hidden"
+                         name="report_module"
+                         tal:attributes="value string:bika.extras.browser.reports.administration_clientsamplepoints" />
+                  <fieldset>
+                    <tal:x content="structure context/@@selection_macros/select_client"/>
+                    <tal:x content="structure context/@@selection_macros/select_output_format"/>
+                  </fieldset>
+                  <input tabindex=""
+                         class="searchButton allowMultiSubmit"
+                         type="submit"
+                         name="submit"
+                         value="Generate report"
+                         i18n:attributes="value"/>
+                </form>
+              </div>
+            </li>
+          </ul>
 
           <!--
           <h2 i18n:translate="">Traceability</h2>
@@ -195,10 +302,9 @@
               </div>
             </li>
           </ul>
-          -->
+        -->
         </fieldset>
       </div>
     </metal:content-core>
   </body>
 </html>
-
