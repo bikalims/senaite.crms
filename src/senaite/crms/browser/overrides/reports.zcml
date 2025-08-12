@@ -10,15 +10,7 @@
       name="administration"
       class="senaite.crms.browser.overrides.reports.AdministrationView"
       permission="zope2.View"
-      layer="senaite.crms.interfaces.ISenaiteCrmsLayer"
-    />
-
-    <browser:page
-      for="bika.reports.interfaces.IReportFolder"
-      name="createreport"
-      class="senaite.crms.browser.overrides.reports.SubmitForm"
-      permission="zope2.View"
-      layer="senaite.crms.interfaces.ISenaiteCrmsLayer"
+      layer="bika.reports.interfaces.IBikaReportsLayer"
     />
 
 </configure>

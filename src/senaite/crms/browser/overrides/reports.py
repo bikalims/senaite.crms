@@ -24,9 +24,6 @@ class AdministrationView(AV):
     """
     template = ViewPageTemplateFile("templates/administration.pt")
 
-    def is_senaite_crms_installed(self):
-        qi = get_installer(self.portal)
-        return qi.is_product_installed("senaite.crms")
 
 
 class SubmitForm(SF):
