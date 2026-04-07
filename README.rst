@@ -1,68 +1,44 @@
-============
-senaite.crms
-============
+## senaite.crms
 
-Tell me what your product does
+### Overview
 
-Features
---------
+`senaite.crms` extends **Senaite** (the modern core of Bika LIMS) with 
 
-- Can be bullet points
+It
+- Adds a function to send labmanagers emails of looming Reference Sample expiry
+- The 'Alert date' can be configured
+- Adds Reference Samples item to the Setup
 
+### Requirements
 
-Examples
---------
+- **Senaite** (recommended latest version) or **Ingwe Bika LIMS 4**
 
-This add-on can be seen in action at the following sites:
-- Is there a page on the internet where everybody can see the features?
+### Installation
 
+#### Using Buildout (Classic Plone/Senaite)
 
-Documentation
--------------
+Add the following to your `buildout.cfg`:
 
-Full documentation for end users can be found in the "docs" folder, and is also available online at http://docs.plone.org/foo/bar
-
-
-Translations
-------------
-
-This product has been translated into
-
-- Klingon (thanks, K'Plai)
-
-
-Installation
-------------
-
-Install senaite.crms by adding it to your buildout::
-
-    [buildout]
-
+cfg
+[buildout]
+eggs =
     ...
+    senaite.crms
 
-    eggs =
-        senaite.crms
+Then run:
+Bashbin/buildout
 
+#### Docker (Recommended for Ingwe Bika LIMS 4)
 
-and then running ``bin/buildout``
+Add senaite.crms to your custom add-ons list in the Docker-based Ingwe Bika distribution.
 
+### License
+This project is licensed under the GNU General Public License v2.0 (GPL-2.0).
 
-Contribute
-----------
+### Support & Professional Services
+[Bika Lab Systems](www.bikalabs.com) offers professional implementation, training, custom development, and support for bika.concrete.
 
-- Issue Tracker: https://github.com/collective/senaite.crms/issues
-- Source Code: https://github.com/collective/senaite.crms
-- Documentation: https://docs.plone.org/foo/bar
+Website: [https://www.bikalims.org](https://www.bikalims.org)
+Email: info@bikalims.org (or contact Lemoene directly)
 
-
-Support
--------
-
-If you are having issues, please let us know.
-We have a mailing list located at: project@example.com
-
-
-License
--------
-
-The project is licensed under the GPLv2.
+Made with ❤️ in Cape Town, South Africa
