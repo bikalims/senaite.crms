@@ -6,10 +6,7 @@ from Products.ATContentTypes.utils import DT2dt
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from bika.lims import api
-from bika.lims.utils import get_image
-from bika.lims.utils import get_link
 from bika.lims.utils import t
-from bika.lims.utils import get_link_for
 from bika.lims.browser.referencesample import ReferenceSamplesView as RSV
 from bika.lims.browser.referencesample import ViewView as VV
 from senaite.crms import _
@@ -127,36 +124,11 @@ class ReferenceSamplesView(RSV):
 
         obj = api.get_object(obj)
 
-        # XXX Refactor expiration to a proper place
-        # ---------------------------- 8< -------------------------------------
-        if item.get("review_state", "current") == "current":
-            # Check expiry date
-            exdate = obj.getExpiryDate()
-            if exdate:
-                expirydate = DT2dt(exdate).replace(tzinfo=None)
-                if (datetime.today() > expirydate):
-                    # Trigger expiration
-                    self.workflow.doActionFor(obj, "expire")
-                    item["review_state"] = "expired"
-                    item["obj"] = obj
-
-        if self.contentFilter.get('review_state', '') \
-           and item.get('review_state', '') == 'expired':
-            # This item must be omitted from the list
-            return None
-        # ---------------------------- >8 -------------------------------------
-
-        url = api.get_url(obj)
-        id = api.get_id(obj)
-        alertdate = obj.getExpiryDate() - self.getExpiryWarning()
-
-        item["ID"] = id
-        item["replace"]["ID"] = get_link(url, value=id)
-        item["DateSampled"] = self.ulocalized_time(
-            obj.getDateSampled(), long_format=True)
-        item["DateReceived"] = self.ulocalized_time(obj.getDateReceived())
-        item["DateOpened"] = self.ulocalized_time(obj.getDateOpened())
-        item["ExpiryDate"] = self.ulocalized_time(obj.getExpiryDate())
+        item = super(ReferenceSamplesView, self).folderitem(obj, item, index)
+        expiry = obj.getExpiryDate()
+        if not expiry:
+            return item
+        alertdate = expiry - self.getExpiryWarning()
         item["AlertDate"] = self.ulocalized_time(alertdate)
 
         # Icons
@@ -167,26 +139,6 @@ class ReferenceSamplesView(RSV):
                 "red alert icon 16x16.png", title=t(_("Alert Date")))
         if after_icons:
             item["after"]["AlertDate"] = after_icons
-
-        manufacturer = obj.getManufacturer()
-        item["replace"]["Manufacturer"] = get_link_for(manufacturer)
-
-        supplier = api.get_parent(obj)
-        item["replace"]["Supplier"] = get_link_for(supplier)
-
-        ref_definition = obj.getReferenceDefinition()
-        item["replace"]["Definition"] = get_link_for(ref_definition)
-
-        # Icons
-        after_icons = ''
-        if obj.getBlank():
-            after_icons += get_image(
-                "blank.png", title=t(_("Blank")))
-        if obj.getHazardous():
-            after_icons += get_image(
-                "hazardous.png", title=t(_("Hazardous")))
-        if after_icons:
-            item["after"]["ID"] = after_icons
 
         return item
 
