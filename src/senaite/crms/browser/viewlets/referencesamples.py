@@ -2,7 +2,8 @@
 
 from string import Template
 from DateTime import DateTime
-from plone.app.layout.viewlets import ViewletBase
+from senaite.core.browser.viewlets.referencesamples import \
+    ReferenceSampleExpiryViewlet
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
@@ -16,7 +17,7 @@ from bika.lims.interfaces import IReferenceSamplesFolder
 from senaite.crms import _
 
 
-class ReferenceSampleAlerts(ViewletBase):
+class ReferenceSampleAlerts(ReferenceSampleExpiryViewlet):
     """Viewlet for expired reference samples
     """
     index = ViewPageTemplateFile("templates/alerts.pt")
