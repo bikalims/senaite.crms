@@ -37,6 +37,10 @@ class ReferenceSampleAlerts(ReferenceSampleExpiryViewlet):
         }
 
     @property
+    def laboratory(self):
+        return api.get_senaite_setup().laboratory
+
+    @property
     def managers(self):
         setup = api.get_senaite_setup()
         departments = setup.departments.values()
@@ -225,7 +229,7 @@ class ReferenceSampleAlerts(ReferenceSampleExpiryViewlet):
     def email_sender_address(self):
         """Sender email is either the lab email or portal email "from" address
         """
-        lab = api.get_setup().laboratory
+        lab = self.laboratory
         lab_email = lab.getEmailAddress()
         portal_email = api.get_registry_record("plone.email_from_address")
         return lab_email or portal_email or ""

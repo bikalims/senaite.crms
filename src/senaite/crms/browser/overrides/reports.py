@@ -5,6 +5,7 @@ import os
 from senaite.crms import _
 from bika.reports.browser.reports.selection_macros import SelectionMacrosView
 from bika.reports.interfaces import IProductivityReport
+from bika.lims import api
 from bika.lims.utils import createPdf
 from bika.lims.utils import logged_in_client
 from bika.lims.utils import to_unicode as _u
@@ -64,7 +65,7 @@ class SubmitForm(SF):
             if sf:
                 self.reporter_signature = sf.absolute_url() + "/Signature"
 
-        lab = self.context.bika_setup.laboratory
+        lab = api.get_senaite_setup().laboratory
         self.laboratory = lab
         self.lab_title = lab.getName()
         self.lab_address = lab.getPrintAddress()

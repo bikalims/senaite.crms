@@ -1,5 +1,5 @@
 <tal:email_template
-  tal:define="laboratory python:context.bika_setup.laboratory;
+  tal:define="laboratory view/laboratory;
               referencesamples python:context.bika_setup.referencesamples.absolute_url()"
   i18n:domain="senaite.crms">
 <tal:p i18n:translate="">
